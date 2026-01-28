@@ -1,0 +1,108 @@
+/* How It Works Section */
+.how-it-works {
+    padding: var(--space-16) 0;
+    background: #f8fbff;
+    position: relative;
+    overflow: hidden;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6);
+    position: relative;
+    z-index: 2;
+}
+
+.step-card {
+    background: var(--color-bg-primary);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+    transition: none;
+    border: 1px solid var(--color-border-light);
+}
+
+.step-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.step-number {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-base);
+    font-weight: var(--font-bold);
+    color: white;
+    background: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.step-icon {
+    font-size: 2rem;
+    margin: var(--space-5) 0 var(--space-3);
+    color: var(--color-primary-dark);
+}
+
+.step-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+}
+
+.step-description {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+}
+
+/* Connecting Line - Desktop Only */
+@media (max-width: 768px) {
+    .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-5);
+    }
+}
+
+@media (max-width: 520px) {
+    .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-4);
+    }
+
+    .step-card {
+        padding: var(--space-3);
+    }
+
+    .step-number {
+        top: -14px;
+        width: 30px;
+        height: 30px;
+        font-size: var(--text-sm);
+    }
+
+    .step-icon {
+        font-size: 1.6rem;
+        margin: var(--space-4) 0 var(--space-2);
+    }
+
+    .step-title {
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-2);
+    }
+
+    .step-description {
+        font-size: var(--text-xs);
+    }
+}

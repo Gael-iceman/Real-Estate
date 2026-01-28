@@ -1,0 +1,65 @@
+/* Property Grid Styles */
+.property-grid {
+    display: grid;
+    gap: var(--space-6);
+    width: 100%;
+}
+
+/* Auto responsive grid */
+.property-grid-auto {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* Fixed column grids */
+.property-grid-1 {
+    grid-template-columns: 1fr;
+}
+
+.property-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.property-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.property-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1280px) {
+    .property-grid-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .property-grid-3,
+    .property-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .property-grid-auto,
+    .property-grid-2,
+    .property-grid-3,
+    .property-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .property-grid {
+        gap: var(--space-4);
+    }
+}
+
+@media (max-width: 380px) {
+    .property-grid-auto,
+    .property-grid-2,
+    .property-grid-3,
+    .property-grid-4 {
+        grid-template-columns: 1fr !important;
+    }
+}

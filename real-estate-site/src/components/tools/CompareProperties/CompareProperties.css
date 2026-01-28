@@ -1,0 +1,138 @@
+/* Compare Properties Styles */
+.compare-properties {
+    padding: var(--space-6);
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.compare-empty {
+    text-align: center;
+    padding: var(--space-12);
+    color: var(--color-text-muted);
+}
+
+.compare-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--color-border-light);
+}
+
+.compare-header h2 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.compare-table-wrapper {
+    overflow-x: auto;
+}
+
+.compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.compare-label-column {
+    width: 150px;
+    position: sticky;
+    left: 0;
+    background: var(--color-bg-primary);
+    z-index: 10;
+}
+
+.compare-property-column {
+    min-width: 250px;
+    padding: var(--space-4);
+    border-left: 1px solid var(--color-border-light);
+}
+
+.compare-property-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.compare-property-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+}
+
+.compare-property-info h3 {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    margin: 0;
+    color: var(--color-text-primary);
+}
+
+.compare-property-info p {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.compare-remove-btn {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.compare-remove-btn:hover {
+    background: var(--color-error);
+    transform: scale(1.1);
+}
+
+.compare-label-cell {
+    padding: var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border-light);
+    position: sticky;
+    left: 0;
+    z-index: 5;
+}
+
+.compare-label-cell .compare-icon {
+    margin-right: var(--space-2);
+    color: var(--color-primary);
+}
+
+.compare-value-cell {
+    padding: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    border-top: 1px solid var(--color-border-light);
+    border-left: 1px solid var(--color-border-light);
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .compare-properties {
+        padding: var(--space-4);
+    }
+
+    .compare-property-column {
+        min-width: 200px;
+    }
+}

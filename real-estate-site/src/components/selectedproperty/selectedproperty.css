@@ -1,0 +1,262 @@
+.activeAppoint {
+  text-decoration: underline;
+  text-decoration-color: #16a34a;
+}
+
+.canceledAppoint {
+  text-decoration: underline;
+  text-decoration-color: #e11d48;
+}
+
+.property-title {
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+}
+
+.property-id {
+  font-size: 0.9rem;
+}
+
+.property-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+}
+
+.property-price {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.property-description {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.contact-item a,
+.card .list-group-item a,
+.card .list-group-item {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.contact-card {
+  width: max-content;
+  max-width: 100%;
+}
+
+.contact-card .contact-item {
+  flex-wrap: nowrap;
+}
+
+.contact-card .contact-item a {
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: nowrap;
+}
+
+.property-subtitle,
+.property-title,
+.property-id,
+.property-price,
+.property-info-value,
+.property-info-label {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.property-info-section {
+  background: #ffffff;
+  border: 1px solid rgba(14, 165, 233, 0.15);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.property-info-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 0.8rem;
+}
+
+.property-info-header h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.property-info-table {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.property-info-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) 1.3fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.property-info-row:last-child {
+  border-bottom: none;
+}
+
+.property-info-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.property-info-value {
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+}
+
+.amenity-check {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 1px solid rgba(14, 165, 233, 0.35);
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--color-primary-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.property-edit-actions {
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+.reachout-cta {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0 4rem;
+}
+
+.reachout-btn {
+  width: 100%;
+  max-width: 520px;
+  padding: 1.1rem 2.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  box-shadow: 0 14px 30px rgba(14, 116, 144, 0.25);
+}
+
+.reachout-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1050;
+}
+
+.reachout-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 2rem 2.5rem;
+  max-width: 560px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+}
+
+.reachout-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.reachout-subtitle {
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.reachout-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.reachout-item svg {
+  color: var(--color-primary-dark);
+}
+
+.reachout-item a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.reachout-item a:hover {
+  text-decoration: underline;
+}
+
+.reachout-label {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.reachout-empty {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.reachout-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .property-title {
+    font-size: 1.6rem;
+  }
+
+  .property-info-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .reachout-card {
+    padding: 1.5rem;
+  }
+}

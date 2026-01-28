@@ -1,0 +1,93 @@
+/* Accessibility Utilities */
+
+/* Skip to main content link */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary);
+    color: white;
+    padding: var(--space-3) var(--space-6);
+    text-decoration: none;
+    font-weight: var(--font-semibold);
+    border-radius: 0 0 var(--radius-md) 0;
+    z-index: 9999;
+    transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Focus visible styles */
+*:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --color-text-primary: #000000;
+        --color-text-secondary: #1a1a1a;
+        --color-bg-primary: #ffffff;
+        --color-border-medium: #000000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Large text mode support */
+@media (min-width: 1px) {
+    html.large-text {
+        font-size: 18px;
+    }
+
+    html.feature-large-text {
+        font-size: 20px;
+    }
+}
+
+/* Focus trap for modals */
+.modal-open {
+    overflow: hidden;
+}
+
+/* Keyboard navigation indicators */
+.keyboard-nav *:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+/* ARIA live region for announcements */
+.aria-live-region {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}

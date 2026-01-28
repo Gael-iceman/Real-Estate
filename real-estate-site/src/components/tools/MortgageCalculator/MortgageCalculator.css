@@ -1,0 +1,105 @@
+/* Mortgage Calculator Styles */
+.mortgage-calculator {
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+}
+
+.calculator-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--color-border-light);
+}
+
+.calculator-header svg {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.calculator-header h3 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.calculator-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.calculator-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.calculator-input-group label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+}
+
+.input-hint {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+.calculator-results {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+}
+
+.result-card {
+    padding: var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.result-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    color: white;
+}
+
+.result-label {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    opacity: 0.9;
+}
+
+.result-primary .result-label {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.result-value {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    font-family: var(--font-heading);
+}
+
+.result-primary .result-value {
+    color: white;
+}
+
+.calculator-note {
+    padding: var(--space-3);
+    background: var(--color-warning-light);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-warning);
+}
+
+.calculator-note small {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+}

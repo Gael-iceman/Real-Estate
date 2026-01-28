@@ -1,0 +1,51 @@
+/* View Toggle Styles */
+.view-toggle {
+    display: inline-flex;
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.view-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--color-border-light);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.view-toggle-btn:last-child {
+    border-right: none;
+}
+
+.view-toggle-btn:hover {
+    background: var(--color-gray-100);
+    color: var(--color-text-primary);
+}
+
+.view-toggle-btn.active {
+    background: var(--color-primary);
+    color: white;
+}
+
+.view-toggle-btn svg {
+    font-size: 1.1em;
+}
+
+.view-toggle-label {
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .view-toggle-label {
+        display: inline;
+    }
+}

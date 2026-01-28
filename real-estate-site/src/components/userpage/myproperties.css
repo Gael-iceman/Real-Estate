@@ -1,0 +1,31 @@
+.myproperties-toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  margin: 1.5rem 0 1.5rem;
+}
+
+.myproperties-search {
+  max-width: 420px;
+}
+
+.myproperties-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .myproperties-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .myproperties-search {
+    max-width: 100%;
+  }
+
+  .myproperties-filters {
+    grid-template-columns: 1fr;
+  }
+}

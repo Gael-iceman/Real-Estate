@@ -1,0 +1,5 @@
+/* Featured Properties */
+.featured-properties {
+    padding: var(--space-12) 0;
+    background: transparent;
+}

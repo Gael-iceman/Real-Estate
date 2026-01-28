@@ -1,0 +1,89 @@
+/* Sticky Contact Card */
+.sticky-contact-card {
+    position: sticky;
+    top: var(--space-6);
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    padding: var(--space-6);
+    border: 2px solid var(--color-border-light);
+}
+
+.contact-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.agent-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    color: white;
+    margin: 0 auto;
+}
+
+.agent-info {
+    text-align: center;
+}
+
+.agent-info h4 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-2) 0;
+}
+
+.agency-name {
+    font-size: var(--text-sm);
+    color: var(--color-primary);
+    font-weight: var(--font-semibold);
+    margin: 0 0 var(--space-3) 0;
+}
+
+.contact-detail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    margin: var(--space-1) 0;
+}
+
+.contact-detail svg {
+    color: var(--color-primary);
+}
+
+.contact-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.response-info {
+    padding: var(--space-3);
+    background: var(--color-success-light);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.response-info small {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+}
+
+@media (max-width: 1024px) {
+    .sticky-contact-card {
+        position: relative;
+        top: 0;
+    }
+}

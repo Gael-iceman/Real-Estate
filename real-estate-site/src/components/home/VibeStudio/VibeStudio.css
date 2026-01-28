@@ -1,0 +1,255 @@
+.vibe-studio {
+  position: relative;
+  padding: 5rem 0;
+  margin: 3rem 0;
+  border-radius: 40px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
+  box-shadow: 0 30px 60px rgba(19, 38, 64, 0.12);
+  overflow: hidden;
+}
+
+.vibe-studio::before {
+  content: "";
+  position: absolute;
+  inset: -20% 0 auto;
+  height: 60%;
+  background: radial-gradient(circle at 20% 20%, rgba(255, 185, 71, 0.35), transparent 60%),
+    radial-gradient(circle at 80% 10%, rgba(76, 201, 240, 0.3), transparent 55%),
+    radial-gradient(circle at 50% 80%, rgba(255, 93, 158, 0.25), transparent 55%);
+  opacity: calc(0.4 + (var(--vibe-energy) * 0.6));
+  animation: vibePulse 12s ease-in-out infinite;
+  z-index: 0;
+}
+
+.vibe-header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.vibe-header h2 {
+  margin-bottom: 0.4rem;
+}
+
+.vibe-eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--color-primary);
+  margin-bottom: 0.6rem;
+  font-weight: 700;
+}
+
+.vibe-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.vibe-btn {
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  background: #111827;
+  color: #fff;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 12px 25px rgba(17, 24, 39, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vibe-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 16px 30px rgba(17, 24, 39, 0.25);
+}
+
+.vibe-btn.active {
+  background: var(--color-primary);
+}
+
+.vibe-panels {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+}
+
+.vibe-panel {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+}
+
+.vibe-panel-play {
+  overflow: hidden;
+  padding: 0;
+}
+
+.vibe-play-area {
+  position: relative;
+  min-height: 320px;
+  border-radius: 24px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.4));
+  border: 2px dashed rgba(17, 24, 39, 0.1);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vibe-play-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  text-align: center;
+  padding: 1rem 2rem;
+}
+
+.vibe-bubble {
+  position: absolute;
+  left: var(--bubble-x);
+  top: var(--bubble-y);
+  width: var(--bubble-size);
+  height: var(--bubble-size);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), var(--bubble-color));
+  opacity: 0.8;
+  animation: bubblePop 1.4s ease-out forwards;
+  transform: translate(-50%, -50%);
+}
+
+.vibe-panel-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vibe-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.2rem;
+  box-shadow: 0 14px 24px rgba(15, 23, 42, 0.08);
+}
+
+.vibe-card-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+}
+
+.vibe-slider {
+  width: 100%;
+  margin: 0.5rem 0;
+}
+
+.vibe-meter {
+  width: 100%;
+  height: 8px;
+  background: rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.vibe-meter span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.vibe-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.vibe-chip {
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vibe-chip:hover {
+  transform: translateY(-2px);
+}
+
+.vibe-chip.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.vibe-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.7);
+}
+
+.vibe-card-note {
+  font-size: 0.95rem;
+  color: rgba(17, 24, 39, 0.7);
+}
+
+@keyframes vibePulse {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(10px) scale(1.05);
+  }
+}
+
+@keyframes bubblePop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -70%) scale(1.4);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .vibe-panels {
+    grid-template-columns: 1fr;
+  }
+
+  .vibe-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .vibe-studio {
+    padding: 3rem 0;
+  }
+
+  .vibe-play-area {
+    min-height: 240px;
+  }
+}

@@ -1,0 +1,199 @@
+.mainNav {
+  background: rgba(9, 71, 187, 0.603);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  height: 72px;
+  box-shadow: 0 12px 30px rgba(2, 32, 50, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.navVisible {
+  top:0px;
+  transition: all 0.5s;
+}
+
+.navHidden {
+  top:-72px;
+  transition: all 0.5s;
+}
+
+.navbarLinkContainer{
+  font-size: 1rem;
+  font-weight: 600;
+  margin-right: 2vw;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+}
+
+.mainNav .navbar-nav {
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.text-link {
+  color: #f8fcff;
+  padding: 0.45rem 0.85rem;
+  margin: 0 0.25vw;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  backdrop-filter: blur(10px);
+}
+
+.text-link:hover {
+  text-decoration: none;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.nav-item {
+  padding-bottom: 0vh;
+}
+
+.nav-item:hover {
+  transition: all 0.2s;
+}
+
+.mainNav i {
+  filter: none;
+}
+
+.mobileLink {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.mobileNav {
+  flex-direction: column;
+  padding: 0.5rem 1rem;
+  height: auto;
+}
+
+.mobileNavBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 56px;
+}
+
+.mobileNavLogo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #f8fcff;
+}
+
+.mobileNavLogo i {
+  font-size: 22px;
+}
+
+.mobileNavToggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.16);
+  color: #f8fcff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileNavToggle i {
+  font-size: 20px;
+}
+
+.mobileNavMenu {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: max-height 0.25s ease;
+}
+
+.mobileNavMenu.is-open {
+  max-height: 320px;
+  padding: 0.75rem 0 1rem;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mobileNavMenu .nav-item {
+  margin: 0;
+  padding: 0;
+}
+
+.mobileNavMenu .mobileLink {
+  display: block;
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .mainNav {
+    padding: 0 1rem;
+    min-height: 64px;
+  }
+
+  .mainNav .navbar-nav {
+    gap: 0.6rem;
+  }
+
+  .text-link {
+    font-size: 0.95rem;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .mobileLink {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .mainNav {
+    padding: 0 0.75rem;
+  }
+
+  .text-link {
+    padding: 0.35rem 0.6rem;
+  }
+
+  .mobileLink {
+    font-size: 0.95rem;
+  }
+
+  .mobileNav {
+    padding: 0.4rem 0.75rem;
+  }
+}

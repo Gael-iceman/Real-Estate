@@ -1,0 +1,64 @@
+@media all and (max-width:480px) {
+  .btn-block-sm { width: 100%; display:block; }
+}  
+
+.hrSection {
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  margin: 3vh 5vw;
+}
+
+.section-title {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.city-grid {
+  row-gap: 0.8rem;
+}
+
+.city-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0f172a;
+  font-weight: 600;
+  border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.city-pill:hover {
+  background: #bae6fd;
+  color: #0f172a;
+}
+
+.search-hero {
+  padding: 1.5rem 0 1rem;
+  background: #f3f9ff;
+  border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.search-hero .hero-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.hero-card {
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-md);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+@media (max-width: 991px) {
+}
+
+@media (max-width: 767px) {
+}

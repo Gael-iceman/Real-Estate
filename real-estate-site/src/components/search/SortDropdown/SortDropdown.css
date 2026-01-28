@@ -1,0 +1,92 @@
+/* Sort Dropdown Styles */
+.sort-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.sort-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-medium);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-width: 180px;
+    justify-content: space-between;
+}
+
+.sort-dropdown-trigger:hover {
+    border-color: var(--color-primary);
+}
+
+.sort-dropdown-trigger svg:first-child {
+    color: var(--color-primary);
+    font-size: 1.1em;
+}
+
+.sort-dropdown-arrow {
+    transition: transform var(--transition-fast);
+}
+
+.sort-dropdown-arrow.open {
+    transform: rotate(180deg);
+}
+
+.sort-dropdown-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 998;
+}
+
+.sort-dropdown-menu {
+    position: absolute;
+    top: calc(100% + var(--space-2));
+    right: 0;
+    min-width: 200px;
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    z-index: 999;
+    overflow: hidden;
+    border: 1px solid var(--color-border-light);
+}
+
+.sort-dropdown-item {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sort-dropdown-item:hover {
+    background: var(--color-gray-100);
+    color: var(--color-text-primary);
+}
+
+.sort-dropdown-item.active {
+    background: var(--color-primary-lightest);
+    color: var(--color-primary);
+    font-weight: var(--font-semibold);
+}
+
+.sort-dropdown-item .check {
+    color: var(--color-primary);
+    font-weight: var(--font-bold);
+}
