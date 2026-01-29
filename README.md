@@ -73,7 +73,7 @@ npm install
 Create `.env`:
 
 ```env
-REACT_APP_API_URL=http://localhost:4000
+REACT_APP_API_URL=https://real-estate-backend-production-723a.up.railway.app
 ```
 
 Start the client:
