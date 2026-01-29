@@ -137,7 +137,7 @@ class MainPage extends Component {
     } else {
       const forRent = this.props.allproperties.find(property => property.isForRent);
       const forSale = this.props.allproperties.find(property => property.isForSale);
-      const { keyword, value } = this.props.match.params;
+      const { value } = this.props.match.params;
       const labelValue = value === "any" ? "All" : value;
       const heading = `${labelValue} properties`;
       return (

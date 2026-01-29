@@ -40,7 +40,6 @@ const PropertyCard = ({
         address,
         city,
         image,
-        property_images = [],
         nrOfRooms,
         nrOfBathrooms,
         sqrMeter,

@@ -80,16 +80,6 @@ export default class PropertyInformation extends Component {
       { label: "Furnished", icon: "fa fa-bed", value: property.isFurnished, show: Boolean(property.isFurnished) },
       { label: "Storage", icon: "fa fa-check", value: storageValue, show: Boolean(storageValue) }
     ].filter(item => item.show);
-    const formatAmenityLabel = (label, value) => {
-      if (typeof value === "string") {
-        const trimmed = value.trim();
-        if (trimmed && trimmed.toLowerCase() !== "yes") {
-          return `${label}: ${trimmed}`;
-        }
-      }
-      return label;
-    };
-
     const overviewRows = [
       {
         label: "Price",

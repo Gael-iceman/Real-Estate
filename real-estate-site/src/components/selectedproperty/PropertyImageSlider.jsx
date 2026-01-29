@@ -12,11 +12,12 @@ const PropertyImageSlider = ({ property }) => {
   const initialIndex = primaryIndex >= 0 ? primaryIndex : 0;
   const [activeIndex, setActiveIndex] = React.useState(initialIndex);
   const [isOpen, setIsOpen] = React.useState(false);
+  const propertyId = property?.id;
 
   React.useEffect(() => {
     const nextIndex = primaryIndex >= 0 ? primaryIndex : 0;
     setActiveIndex(nextIndex);
-  }, [property?.id, primaryIndex]);
+  }, [propertyId, primaryIndex]);
 
   React.useEffect(() => {
     if (!isOpen) return;
