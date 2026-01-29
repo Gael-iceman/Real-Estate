@@ -1,4 +1,4 @@
-require("dotenv").config({ path: require("path").join(__dirname, "..", ".env") });
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -149,16 +149,35 @@ const {
   PORT = 4000,
   PUBLIC_BASE_URL = "",
   CLIENT_ORIGIN = "http://localhost:3000",
-  JWT_COOKIE_NAME = "re_auth"
+  JWT_COOKIE_NAME = "re_auth",
+  COOKIE_SAMESITE = "",
+  COOKIE_SECURE = ""
 } = process.env;
 
 const allowedOrigins = CLIENT_ORIGIN.split(",").map(origin => origin.trim()).filter(Boolean);
 
 const isProduction = process.env.NODE_ENV === "production";
+const parseEnvBool = (value, fallback) => {
+  if (value === undefined || value === null || value === "") return fallback;
+  const normalized = String(value).trim().toLowerCase();
+  if (["true", "1", "yes", "y"].includes(normalized)) return true;
+  if (["false", "0", "no", "n"].includes(normalized)) return false;
+  return fallback;
+};
+
+const normalizedSameSite = String(COOKIE_SAMESITE || "").trim().toLowerCase();
+const sameSiteDefault = isProduction ? "none" : "lax";
+const sameSiteValue = ["lax", "strict", "none"].includes(normalizedSameSite)
+  ? normalizedSameSite
+  : sameSiteDefault;
+const secureValue = sameSiteValue === "none"
+  ? true
+  : parseEnvBool(COOKIE_SECURE, isProduction);
+
 const authCookieOptions = {
   httpOnly: true,
-  sameSite: "lax",
-  secure: isProduction,
+  sameSite: sameSiteValue,
+  secure: secureValue,
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: "/"
 };
