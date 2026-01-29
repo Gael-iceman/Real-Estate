@@ -154,6 +154,8 @@ const {
   COOKIE_SECURE = ""
 } = process.env;
 
+const normalizeBaseUrl = value => String(value || "").trim().replace(/\/+$/, "");
+
 const allowedOrigins = CLIENT_ORIGIN.split(",").map(origin => origin.trim()).filter(Boolean);
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -1785,7 +1787,7 @@ app.post(
       return res.status(400).json({ message: "Image file required" });
     }
 
-    const baseUrl = PUBLIC_BASE_URL || `${req.protocol}://${req.get("host")}`;
+    const baseUrl = normalizeBaseUrl(PUBLIC_BASE_URL) || `${req.protocol}://${req.get("host")}`;
     const url = `${baseUrl}/uploads/${req.file.filename}`;
     const [countRows] = await pool.query(
       "SELECT COUNT(*) AS count FROM property_images WHERE property_id = :propertyId",
@@ -1840,7 +1842,7 @@ app.post(
       return res.status(400).json({ message: "Only video files are allowed" });
     }
 
-    const baseUrl = PUBLIC_BASE_URL || `${req.protocol}://${req.get("host")}`;
+    const baseUrl = normalizeBaseUrl(PUBLIC_BASE_URL) || `${req.protocol}://${req.get("host")}`;
     const url = `${baseUrl}/uploads/${req.file.filename}`;
 
     if (ownership.propertyRow.video_url) {
