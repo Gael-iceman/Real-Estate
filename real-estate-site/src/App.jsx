@@ -19,8 +19,6 @@ import TermsOfService from "./components/layout/TermsOfService";
 import AboutUs from "./components/layout/AboutUs";
 import ContactUs from "./components/layout/ContactUs";
 
-import "bootstrap/dist/css/bootstrap.css";
-
 class App extends Component {
   render() {
     return (
