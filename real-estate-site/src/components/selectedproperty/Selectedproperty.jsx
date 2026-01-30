@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { fetchproperty, updateproperty, deleteproperty } from "../../actions/property";
@@ -358,16 +358,7 @@ class Selectedproperty extends Component {
 
   render() {
     if (!this.props.property) {
-      return (
-        <div className="mt-2 d-flex justify-content-center">
-          <div className="col-6">
-            <div className="alert alert-warning" role="alert">
-              Looks like you just logged out. And we can not show you this
-              property_listing.
-            </div>
-          </div>
-        </div>
-      );
+      return <Redirect to="/" />;
     } else if (this.props.property && isAdminUser(this.props.user)) {
       const { id } = this.props.property;
       const isUpdateRoute = this.getRouteMode() === "update";
