@@ -313,18 +313,18 @@ class Selectedproperty extends Component {
               <p className="reachout-subtitle">
                 Reach out using any of the options below.
               </p>
-              {contactPhone ? (
+              {hasText(displayPhone) ? (
                 <p className="reachout-item">
                   <FaPhoneAlt />
-                  <a href={`tel:${contactPhone}`}>{contactPhone}</a>
+                  <a href={`tel:${displayPhone}`}>{displayPhone}</a>
                 </p>
               ) : (
                 ""
               )}
-              {contactEmail ? (
+              {hasText(displayEmail) ? (
                 <p className="reachout-item">
                   <FaEnvelope />
-                  <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                  <a href={`mailto:${displayEmail}`}>{displayEmail}</a>
                 </p>
               ) : (
                 ""
@@ -340,7 +340,7 @@ class Selectedproperty extends Component {
               ) : (
                 ""
               )}
-              {!contactEmail && !contactPhone ? (
+              {!hasContact ? (
                 <p className="reachout-empty">
                   No contact details available yet.
                 </p>
