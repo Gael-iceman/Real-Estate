@@ -33,44 +33,44 @@
 }
 
 /* Variants */
-.badge-primary {
+.badge-modern.badge-primary {
     background: var(--color-primary-lightest);
     color: var(--color-primary-dark);
 }
 
-.badge-secondary {
+.badge-modern.badge-secondary {
     background: var(--color-secondary-lightest);
     color: var(--color-secondary-dark);
 }
 
-.badge-success {
-    background: var(--color-primary-lightest);
-    color: var(--color-primary-dark);
+.badge-modern.badge-success {
+    background: var(--color-success-light);
+    color: var(--color-success);
 }
 
-.badge-warning {
-    background: var(--color-primary-lightest);
-    color: var(--color-primary-dark);
+.badge-modern.badge-warning {
+    background: var(--color-warning-light);
+    color: var(--color-warning);
 }
 
-.badge-error {
-    background: var(--color-primary-lightest);
-    color: var(--color-primary-dark);
+.badge-modern.badge-error {
+    background: var(--color-error-light);
+    color: var(--color-error);
 }
 
-.badge-info {
-    background: var(--color-primary-lightest);
-    color: var(--color-primary-dark);
+.badge-modern.badge-info {
+    background: var(--color-info-light);
+    color: var(--color-info);
 }
 
-.badge-neutral {
+.badge-modern.badge-neutral {
     background: var(--color-gray-200);
     color: var(--color-gray-700);
 }
 
-.badge-accent {
-    background: var(--color-primary-lightest);
-    color: var(--color-primary-dark);
+.badge-modern.badge-accent {
+    background: var(--color-accent-light);
+    color: var(--color-accent-dark);
 }
 
 /* Icon Styles */
