@@ -44,7 +44,7 @@
 }
 
 .badge-modern.badge-success {
-    background: var(--color-primary);
+    background: #007BFF;
     color: var(--color-text-white);
 }
 
@@ -59,7 +59,7 @@
 }
 
 .badge-modern.badge-info {
-    background: var(--color-primary);
+    background: #007BFF;
     color: var(--color-text-white);
 }
 
