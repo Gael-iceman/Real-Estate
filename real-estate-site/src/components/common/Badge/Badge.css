@@ -44,13 +44,13 @@
 }
 
 .badge-modern.badge-success {
-    background: var(--color-success-light);
-    color: var(--color-success);
+    background: var(--color-primary);
+    color: var(--color-text-white);
 }
 
 .badge-modern.badge-warning {
-    background: var(--color-warning-light);
-    color: var(--color-warning);
+    background: var(--color-warning);
+    color: var(--color-text-primary);
 }
 
 .badge-modern.badge-error {
@@ -59,8 +59,8 @@
 }
 
 .badge-modern.badge-info {
-    background: var(--color-info-light);
-    color: var(--color-info);
+    background: var(--color-primary);
+    color: var(--color-text-white);
 }
 
 .badge-modern.badge-neutral {
