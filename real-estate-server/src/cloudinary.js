@@ -13,18 +13,35 @@ const hasSeparateConfig = Boolean(
   CLOUDINARY_CLOUD_NAME && CLOUDINARY_API_KEY && CLOUDINARY_API_SECRET
 );
 
-const isCloudinaryConfigured = hasCloudinaryUrl || hasSeparateConfig;
+let cloudinaryConfigurationError = null;
+let isCloudinaryConfigured = hasCloudinaryUrl || hasSeparateConfig;
 
 if (isCloudinaryConfigured) {
-  if (hasSeparateConfig) {
-    cloudinary.config({
-      cloud_name: CLOUDINARY_CLOUD_NAME,
-      api_key: CLOUDINARY_API_KEY,
-      api_secret: CLOUDINARY_API_SECRET,
-      secure: true
-    });
-  } else {
-    cloudinary.config({ secure: true });
+  try {
+    if (hasSeparateConfig) {
+      cloudinary.config({
+        cloud_name: CLOUDINARY_CLOUD_NAME,
+        api_key: CLOUDINARY_API_KEY,
+        api_secret: CLOUDINARY_API_SECRET,
+        secure: true
+      });
+    } else {
+      cloudinary.config({ secure: true });
+    }
+
+    const activeConfig = cloudinary.config();
+    if (
+      !activeConfig.cloud_name ||
+      !activeConfig.api_key ||
+      !activeConfig.api_secret
+    ) {
+      throw new Error(
+        "Cloudinary config is incomplete. Set CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME or use CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET."
+      );
+    }
+  } catch (err) {
+    cloudinaryConfigurationError = err;
+    isCloudinaryConfigured = false;
   }
 }
 
@@ -32,7 +49,7 @@ const buildCloudinaryPublicId = prefix => `${prefix}_${crypto.randomUUID()}`;
 
 const uploadBufferToCloudinary = (buffer, options) => {
   if (!isCloudinaryConfigured) {
-    throw new Error("Cloudinary is not configured");
+    throw cloudinaryConfigurationError || new Error("Cloudinary is not configured");
   }
 
   return new Promise((resolve, reject) => {
@@ -91,6 +108,7 @@ const getCloudinaryPublicIdFromUrl = url => {
 
 module.exports = {
   buildCloudinaryPublicId,
+  cloudinaryConfigurationError,
   destroyCloudinaryAsset,
   getCloudinaryPublicIdFromUrl,
   isCloudinaryConfigured,

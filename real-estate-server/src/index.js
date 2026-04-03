@@ -10,6 +10,7 @@ const multer = require("multer");
 const pool = require("./db");
 const {
   buildCloudinaryPublicId,
+  cloudinaryConfigurationError,
   destroyCloudinaryAsset,
   getCloudinaryPublicIdFromUrl,
   isCloudinaryConfigured,
@@ -1803,7 +1804,10 @@ app.post(
     }
 
     if (!isCloudinaryConfigured) {
-      return res.status(500).json({ message: "Cloudinary is not configured" });
+      return res.status(500).json({
+        message:
+          cloudinaryConfigurationError?.message || "Cloudinary is not configured"
+      });
     }
 
     const uploadedImage = await uploadBufferToCloudinary(req.file.buffer, {
@@ -1862,7 +1866,10 @@ app.post(
     }
 
     if (!isCloudinaryConfigured) {
-      return res.status(500).json({ message: "Cloudinary is not configured" });
+      return res.status(500).json({
+        message:
+          cloudinaryConfigurationError?.message || "Cloudinary is not configured"
+      });
     }
 
     const uploadedVideo = await uploadBufferToCloudinary(req.file.buffer, {
@@ -2037,6 +2044,17 @@ app.use((err, req, res, next) => {
       });
     }
     return res.status(400).json({ message: err.message });
+  }
+  if (err && typeof err.message === "string") {
+    const lowerMessage = err.message.toLowerCase();
+    if (
+      lowerMessage.includes("cloudinary") ||
+      lowerMessage.includes("api key") ||
+      lowerMessage.includes("api secret") ||
+      lowerMessage.includes("cloud name")
+    ) {
+      return res.status(500).json({ message: err.message });
+    }
   }
   if (err && err.sqlMessage) {
     return res.status(400).json({ message: err.sqlMessage });
