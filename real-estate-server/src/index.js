@@ -3,13 +3,18 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const fs = require("fs");
-const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 
 const pool = require("./db");
+const {
+  buildCloudinaryPublicId,
+  destroyCloudinaryAsset,
+  getCloudinaryPublicIdFromUrl,
+  isCloudinaryConfigured,
+  uploadBufferToCloudinary
+} = require("./cloudinary");
 const { requireAuth } = require("./auth");
 
 const app = express();
@@ -82,12 +87,6 @@ const sanitizeValue = (value, key, path, issues) => {
   return value;
 };
 
-const uploadsDir = path.join(__dirname, "..", "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-app.use("/uploads", express.static(uploadsDir));
-
 const ALLOWED_IMAGE_EXTENSIONS = new Set([
   ".jpg",
   ".jpeg",
@@ -110,14 +109,7 @@ const isAllowedImageFile = file => {
   return true;
 };
 
-const storage = multer.diskStorage({
-  destination: uploadsDir,
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname || "").toLowerCase();
-    const name = `${crypto.randomUUID()}${ext}`;
-    cb(null, name);
-  }
-});
+const storage = multer.memoryStorage();
 
 const IMAGE_UPLOAD_MAX_MB = Number.parseInt(
   process.env.IMAGE_UPLOAD_MAX_MB || "10",
@@ -147,14 +139,11 @@ const videoUpload = multer({
 const {
   JWT_SECRET = "",
   PORT = 4000,
-  PUBLIC_BASE_URL = "",
   CLIENT_ORIGIN = "http://localhost:3000",
   JWT_COOKIE_NAME = "re_auth",
   COOKIE_SAMESITE = "",
   COOKIE_SECURE = ""
 } = process.env;
-
-const normalizeBaseUrl = value => String(value || "").trim().replace(/\/+$/, "");
 
 const allowedOrigins = CLIENT_ORIGIN.split(",").map(origin => origin.trim()).filter(Boolean);
 
@@ -290,11 +279,19 @@ const isAdminRole = role => {
   return normalized === "admin";
 };
 
-const getPublicIdFromUrl = url => {
-  if (!url) return null;
-  const safeUrl = String(url).split("?")[0];
-  const filename = path.basename(safeUrl);
-  return filename || null;
+const getPublicIdFromUrl = url => getCloudinaryPublicIdFromUrl(url);
+
+const resolveStoredPublicId = (storedPublicId, url) =>
+  storedPublicId || getPublicIdFromUrl(url);
+
+const destroyStoredAsset = async (publicId, resourceType) => {
+  if (!publicId) return;
+
+  try {
+    await destroyCloudinaryAsset(publicId, resourceType);
+  } catch (err) {
+    console.error(`Failed to delete Cloudinary ${resourceType}:`, err.message);
+  }
 };
 
 const mapPropertyImageRow = row => ({
@@ -302,7 +299,7 @@ const mapPropertyImageRow = row => ({
   image: {
     id: row.id,
     url: row.image_url,
-    public_id: getPublicIdFromUrl(row.image_url),
+    public_id: resolveStoredPublicId(row.public_id, row.image_url),
     isPrimary: Boolean(row.is_primary),
     displayOrder: row.display_order,
     caption: row.caption
@@ -417,6 +414,7 @@ const mappropertyRow = row => ({
   lat: row.latitude,
   lon: row.longitude,
   videoUrl: row.video_url,
+  videoPublicId: resolveStoredPublicId(row.video_public_id, row.video_url),
   propertiestatus: row.status,
   featured: Boolean(row.featured),
   views: row.views,
@@ -475,7 +473,7 @@ const attachImagesToproperties = async properties => {
   if (!properties.length) return;
   const propertyIds = properties.map(property => property.id);
   const [rows] = await pool.query(
-    "SELECT id, property_id, image_url, is_primary, display_order, caption FROM property_images WHERE property_id IN (:propertyIds) ORDER BY is_primary DESC, display_order ASC, id ASC",
+    "SELECT id, property_id, image_url, public_id, is_primary, display_order, caption FROM property_images WHERE property_id IN (:propertyIds) ORDER BY is_primary DESC, display_order ASC, id ASC",
     { propertyIds }
   );
 
@@ -1290,6 +1288,11 @@ app.put(
 
     let updates = [];
     const params = { propertyId };
+    const existingVideoPublicId = resolveStoredPublicId(
+      ownership.propertyRow.video_public_id,
+      ownership.propertyRow.video_url
+    );
+    let shouldDeleteExistingCloudinaryVideo = false;
 
     if (req.body.title !== undefined) {
       const title = String(req.body.title || "").trim();
@@ -1468,8 +1471,18 @@ app.put(
     }
 
     if (req.body.videoUrl !== undefined) {
+      const nextVideoUrl = String(req.body.videoUrl || "").trim() || null;
       updates.push("video_url = :videoUrl");
-      params.videoUrl = String(req.body.videoUrl || "").trim() || null;
+      params.videoUrl = nextVideoUrl;
+
+      if (
+        existingVideoPublicId &&
+        nextVideoUrl !== ownership.propertyRow.video_url
+      ) {
+        updates.push("video_public_id = :videoPublicId");
+        params.videoPublicId = null;
+        shouldDeleteExistingCloudinaryVideo = true;
+      }
     }
 
     if (req.body.propertiestatus !== undefined || req.body.status !== undefined) {
@@ -1580,6 +1593,10 @@ app.put(
       }
     }
 
+    if (shouldDeleteExistingCloudinaryVideo) {
+      await destroyStoredAsset(existingVideoPublicId, "video");
+    }
+
     const [updatedRows] = await pool.query("SELECT * FROM properties WHERE id = :propertyId", {
       propertyId
     });
@@ -1615,27 +1632,25 @@ app.delete(
     }
 
     const [imageRows] = await pool.query(
-      "SELECT image_url FROM property_images WHERE property_id = :propertyId",
+      "SELECT image_url, public_id FROM property_images WHERE property_id = :propertyId",
       { propertyId }
     );
-    imageRows.forEach(row => {
-      const publicId = getPublicIdFromUrl(row.image_url);
-      if (!publicId) return;
-      const filePath = path.join(uploadsDir, publicId);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    });
+    await Promise.all(
+      imageRows.map(row =>
+        destroyStoredAsset(
+          resolveStoredPublicId(row.public_id, row.image_url),
+          "image"
+        )
+      )
+    );
 
-    if (ownership.propertyRow.video_url) {
-      const videoPublicId = getPublicIdFromUrl(ownership.propertyRow.video_url);
-      if (videoPublicId) {
-        const filePath = path.join(uploadsDir, videoPublicId);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-      }
-    }
+    await destroyStoredAsset(
+      resolveStoredPublicId(
+        ownership.propertyRow.video_public_id,
+        ownership.propertyRow.video_url
+      ),
+      "video"
+    );
 
     await pool.query("DELETE FROM properties WHERE id = :propertyId", {
       propertyId
@@ -1787,8 +1802,16 @@ app.post(
       return res.status(400).json({ message: "Image file required" });
     }
 
-    const baseUrl = normalizeBaseUrl(PUBLIC_BASE_URL) || `${req.protocol}://${req.get("host")}`;
-    const url = `${baseUrl}/uploads/${req.file.filename}`;
+    if (!isCloudinaryConfigured) {
+      return res.status(500).json({ message: "Cloudinary is not configured" });
+    }
+
+    const uploadedImage = await uploadBufferToCloudinary(req.file.buffer, {
+      resource_type: "image",
+      public_id: buildCloudinaryPublicId("re_property")
+    });
+    const url = uploadedImage.secure_url;
+    const publicId = uploadedImage.public_id;
     const [countRows] = await pool.query(
       "SELECT COUNT(*) AS count FROM property_images WHERE property_id = :propertyId",
       { propertyId }
@@ -1797,14 +1820,14 @@ app.post(
     const displayOrder = countRows[0].count;
 
     const [imageResult] = await pool.query(
-      "INSERT INTO property_images (property_id, image_url, is_primary, display_order) VALUES (:propertyId, :url, :isPrimary, :displayOrder)",
-      { propertyId, url, isPrimary, displayOrder }
+      "INSERT INTO property_images (property_id, image_url, public_id, is_primary, display_order) VALUES (:propertyId, :url, :publicId, :isPrimary, :displayOrder)",
+      { propertyId, url, publicId, isPrimary, displayOrder }
     );
 
     res.json({
       id: imageResult.insertId,
       url,
-      public_id: req.file.filename,
+      public_id: publicId,
       isPrimary: Boolean(isPrimary),
       displayOrder
     });
@@ -1835,41 +1858,48 @@ app.post(
     }
 
     if (!req.file.mimetype || !req.file.mimetype.startsWith("video/")) {
-      const filePath = path.join(uploadsDir, req.file.filename);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
       return res.status(400).json({ message: "Only video files are allowed" });
     }
 
-    const baseUrl = normalizeBaseUrl(PUBLIC_BASE_URL) || `${req.protocol}://${req.get("host")}`;
-    const url = `${baseUrl}/uploads/${req.file.filename}`;
-
-    if (ownership.propertyRow.video_url) {
-      const existingPublicId = getPublicIdFromUrl(ownership.propertyRow.video_url);
-      if (existingPublicId) {
-        const existingPath = path.join(uploadsDir, existingPublicId);
-        if (fs.existsSync(existingPath)) {
-          fs.unlinkSync(existingPath);
-        }
-      }
+    if (!isCloudinaryConfigured) {
+      return res.status(500).json({ message: "Cloudinary is not configured" });
     }
+
+    const uploadedVideo = await uploadBufferToCloudinary(req.file.buffer, {
+      resource_type: "video",
+      public_id: buildCloudinaryPublicId("re_video")
+    });
+    const url = uploadedVideo.secure_url;
+    const publicId = uploadedVideo.public_id;
+    const existingVideoPublicId = resolveStoredPublicId(
+      ownership.propertyRow.video_public_id,
+      ownership.propertyRow.video_url
+    );
 
     try {
       await pool.query(
-        "UPDATE properties SET video_url = :url WHERE id = :propertyId",
-        { url, propertyId }
+        "UPDATE properties SET video_url = :url, video_public_id = :videoPublicId WHERE id = :propertyId",
+        { url, videoPublicId: publicId, propertyId }
       );
     } catch (err) {
-      if (err.code === "ER_BAD_FIELD_ERROR" && String(err.message).includes("video_url")) {
-        return res.status(400).json({ message: "video_url column missing. Please run the database migration." });
+      if (err.code === "ER_BAD_FIELD_ERROR") {
+        const message = String(err.message || "");
+        if (message.includes("video_url") || message.includes("video_public_id")) {
+          return res.status(400).json({
+            message: "video_url or video_public_id column missing. Please run the database migration."
+          });
+        }
       }
       throw err;
     }
 
+    if (existingVideoPublicId && existingVideoPublicId !== publicId) {
+      await destroyStoredAsset(existingVideoPublicId, "video");
+    }
+
     res.json({
       url,
-      public_id: req.file.filename
+      public_id: publicId
     });
   })
 );
@@ -1887,7 +1917,6 @@ app.delete(
 
     const propertyId = Number(req.params.propertyId);
     const imageId = Number(req.params.imageId);
-    const publicId = req.params.publicId;
 
     const ownership = await ensurepropertyOwner(propertyId, req.userId);
     if (!ownership.ok) {
@@ -1895,10 +1924,17 @@ app.delete(
     }
 
     const [imageRows] = await pool.query(
-      "SELECT is_primary FROM property_images WHERE property_id = :propertyId AND id = :imageId",
+      "SELECT is_primary, public_id, image_url FROM property_images WHERE property_id = :propertyId AND id = :imageId",
       { propertyId, imageId }
     );
+    if (!imageRows.length) {
+      return res.status(404).json({ message: "Image not found" });
+    }
     const wasPrimary = imageRows.length ? Boolean(imageRows[0].is_primary) : false;
+    const storedPublicId = resolveStoredPublicId(
+      imageRows[0].public_id,
+      imageRows[0].image_url
+    );
 
     await pool.query(
       "DELETE FROM property_images WHERE property_id = :propertyId AND id = :imageId",
@@ -1918,15 +1954,10 @@ app.delete(
       }
     }
 
-    if (publicId) {
-      const filePath = path.join(uploadsDir, publicId);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    }
+    await destroyStoredAsset(storedPublicId, "image");
 
     const [updatedRows] = await pool.query(
-      "SELECT id, property_id, image_url, is_primary, display_order, caption FROM property_images WHERE property_id = :propertyId ORDER BY is_primary DESC, display_order ASC, id ASC",
+      "SELECT id, property_id, image_url, public_id, is_primary, display_order, caption FROM property_images WHERE property_id = :propertyId ORDER BY is_primary DESC, display_order ASC, id ASC",
       { propertyId }
     );
 
@@ -1971,7 +2002,7 @@ app.put(
     );
 
     const [updatedRows] = await pool.query(
-      "SELECT id, property_id, image_url, is_primary, display_order, caption FROM property_images WHERE property_id = :propertyId ORDER BY is_primary DESC, display_order ASC, id ASC",
+      "SELECT id, property_id, image_url, public_id, is_primary, display_order, caption FROM property_images WHERE property_id = :propertyId ORDER BY is_primary DESC, display_order ASC, id ASC",
       { propertyId }
     );
 
